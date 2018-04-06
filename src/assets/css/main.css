@@ -1,0 +1,16 @@
+:root {
+  --near-white: #F4F4F4;
+  --very-white: #F7F7F7;
+  --main-color: #5e2ca5;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  background-color:#F7F7F8;
+}
+
