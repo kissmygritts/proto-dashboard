@@ -1,5 +1,5 @@
 :root {
-  --near-white: #F4F4F4;
+  --near-white: #f0f0f0;
   --very-white: #F7F7F7;
   --main-color: #5e2ca5;
 }
@@ -11,6 +11,6 @@
 }
 
 body {
-  background-color:#F7F7F8;
+  background-color:#eaeaea;
 }
 

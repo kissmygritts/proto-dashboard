@@ -1,12 +1,14 @@
 <template>
   <div class="sidebar">
 
-    <div class="logo">
-      <h1 class="is-size-4">GUS</h1>
-    </div>
-
     <div class="side-nav">
       <ul class="nav-list">
+        <le class="nav-item">
+          <span class="icon is-large">
+            <img src="../assets/logo.png" alt="dog logo">
+          </span>
+          <span class="nav-text is-size-5">GUS</span>
+        </le>
         <li class="nav-item">
           <span class="icon is-large">
             <i class="flaticon-compass"></i>
@@ -49,22 +51,28 @@
 </template>
 
 <script>
+import '../assets/css/logos/flaticon.css'
 export default {
   name: 'SidebarNav'
 }
 </script>
 
 <style scoped>
+img {
+  width: 42px;
+  height: 42px;
+}
+
 .sidebar {
   background-color: var(--main-color);
   color: white;
-  min-width: 210px;
+  min-width: 178px;
 }
 
 .logo {
   height: 62px;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   padding-left: 1rem;
 }
@@ -72,7 +80,7 @@ export default {
 .nav-list {
   display: flex;
   flex-direction: column;
-  padding-top: 16px;
+  padding-top: 6px;
 }
 
 .nav-item {

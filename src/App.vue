@@ -2,6 +2,7 @@
   <div id="app">
     <sidebar-nav />
     <div class="main-panel">
+      <status-bar />
       <router-view/>
     </div>
 
@@ -14,6 +15,7 @@
 
 <script>
 import SidebarNav from '@/components/SidebarNav.vue'
+import StatusBar from '@/components/StatusBar.vue'
 
 // import css stylesheets
 import 'bulma/css/bulma.css'
@@ -22,7 +24,8 @@ import './assets/css/icons/flaticon.css'
 
 export default {
   components: {
-    SidebarNav
+    SidebarNav,
+    StatusBar
   }
 }
 </script>

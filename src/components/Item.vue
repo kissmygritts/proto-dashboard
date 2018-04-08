@@ -1,11 +1,11 @@
 <template>
   <div class="item">
     <div class="item-head">
-      <h3 class="">{{ item.effort_name }}</h3>
+      <h3 class="is-capitalized">{{ item.effort_name }}</h3>
     </div>
 
     <div class="item-content">
-      {{ item.effort_summary }}
+      {{ item.effort_summary.slice(0, 140) }}...
     </div>
 
     <div class="item-footer">
