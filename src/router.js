@@ -22,5 +22,7 @@ export default new Router({
       name: 'efforts',
       component: Efforts
     }
-  ]
+  ],
+  linkActiveClass: 'active',
+  linkExactActiveClass: 'active'
 })

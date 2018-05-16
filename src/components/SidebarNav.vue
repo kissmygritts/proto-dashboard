@@ -95,6 +95,10 @@ img {
   background-color: rgba(255, 255, 255, .1);
 }
 
+.nav-item--active {
+  background-color: rgba(255, 255, 255, .25);
+}
+
 .nav-text {
   padding-left: .5rem;
 }

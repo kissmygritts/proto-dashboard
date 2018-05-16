@@ -11,6 +11,13 @@
         <span></span>
       </a>
     </div>
+
+    <div class="navbar-menu">
+      <div class="navbar-end">
+        <a href="#" class="navbar-item"><i class="flaticon-settings-8"></i></a>
+        <a href="#" class="navbar-item"><i class="flaticon-user"></i></a>
+      </div>
+    </div>
   </nav>
 </template>
 
@@ -21,5 +28,11 @@ export default {
 </script>
 
 <style scoped>
-
+[class^="flaticon-"]:before, [class*="flaticon-"]:before,
+[class^="flaticon-"]:after, [class*="flaticon-"]:after {
+  font-size: 24px;
+  text-align: center;
+  margin: 0;
+  color: grey;
+}
 </style>

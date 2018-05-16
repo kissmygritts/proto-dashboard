@@ -5,6 +5,7 @@
     </div>
       <div class="sidebar">
         <button class="button is-purple is-fullwidth">Add Effort</button>
+        <div class="options">options</div>
       </div>
   </div>
 </template>
@@ -37,6 +38,8 @@ export default {
 .sidebar {
   width: 30%;
   padding-top: 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 .is-purple {

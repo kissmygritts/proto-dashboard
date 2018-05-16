@@ -9,9 +9,24 @@
     </div>
 
     <div class="item-footer">
-      <div class="tags">
-        <span class="tag" v-for="(tag, index) in item.effort_tags" :key="index">{{ tag }}</span>
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <div class="tags">
+              <span class="tag" v-for="(tag, index) in item.effort_tags" :key="index">{{ tag }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <span class="more-info"><i class="flaticon-more-1"></i></span>
+          </div>
+        </div>
       </div>
+
+      <!-- <div class="tags">
+        <span class="tag" v-for="(tag, index) in item.effort_tags" :key="index">{{ tag }}</span>
+      </div> -->
     </div>
   </div>
 </template>
@@ -25,7 +40,7 @@ export default {
 
 <style scoped>
 .item {
-  border-bottom: 2px solid var(--near-white);
+  border-bottom: 1px solid var(--main-grey);
   padding: 12px 16px;
   background-color: white;
   transition: all 500ms ease;
@@ -65,4 +80,7 @@ export default {
   color: white;
 }
 
+.more-info {
+  color: var(--main-color);
+}
 </style>
