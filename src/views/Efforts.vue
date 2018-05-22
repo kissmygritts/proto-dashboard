@@ -6,6 +6,10 @@
       <div class="sidebar">
         <button class="button is-purple is-fullwidth">Add Effort</button>
         <div class="options">options</div>
+
+        <hr>
+
+        <pre><code>{{ $data }}</code></pre>
       </div>
   </div>
 </template>
@@ -13,12 +17,33 @@
 <script>
 import ItemList from '@/components/ItemList.vue'
 import StatusBar from '@/components/StatusBar.vue'
+import { gql } from 'apollo-boost'
+
+const ALL_EFFORTS_QUERY = gql`
+  query AllEffortsQuery {
+    efforts {
+      id
+      effort_name
+      effort_status
+    }
+  }
+`
 
 export default {
   name: 'effort',
   components: {
     StatusBar,
     ItemList
+  },
+  data () {
+    return {
+      efforts: []
+    }
+  },
+  apollo: {
+    efforts: {
+      query: ALL_EFFORTS_QUERY
+    }
   }
 }
 </script>

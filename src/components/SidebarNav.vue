@@ -3,12 +3,12 @@
 
     <div class="side-nav">
       <ul class="nav-list">
-        <le class="nav-item">
+        <li class="nav-item">
           <span class="icon is-large">
             <img src="../assets/logo.png" alt="dog logo">
           </span>
           <span class="nav-text is-size-5">GUS</span>
-        </le>
+        </li>
         <li class="nav-item">
           <span class="icon is-large">
             <i class="flaticon-compass"></i>
