@@ -19,6 +19,7 @@ import StatusBar from '@/components/StatusBar.vue'
 
 // import css stylesheets
 import 'bulma/css/bulma.css'
+import 'tachyons/css/tachyons.css'
 import './assets/css/main.css'
 import './assets/css/icons/flaticon.css'
 

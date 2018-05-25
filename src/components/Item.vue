@@ -1,11 +1,13 @@
 <template>
   <div class="item">
     <div class="item-head">
-      <h3 class="is-capitalized">{{ item.effort_name }}</h3>
+      <!-- <h3 class="is-capitalized">{{ item.effort_name }}</h3> -->
+      <span class="is-capitalized is-size-5">{{ item.effort_name }}  </span>
+      <span class="is-uppercase is-size-6 has-text-grey">{{ item.effort_agency }}</span>
     </div>
 
     <div class="item-content">
-      {{ item.effort_summary.slice(0, 140) }}...
+      {{ item.effort_purpose.slice(0, 140) }}...
     </div>
 
     <div class="item-footer">
@@ -13,7 +15,8 @@
         <div class="level-left">
           <div class="level-item">
             <div class="tags">
-              <span class="tag" v-for="(tag, index) in item.effort_tags" :key="index">{{ tag }}</span>
+              <!-- <span class="tag" v-for="(tag, index) in item.effort_status" :key="index">{{ tag }}</span> -->
+              <span class="tag">{{ item.effort_status }}</span>
             </div>
           </div>
         </div>
@@ -24,9 +27,6 @@
         </div>
       </div>
 
-      <!-- <div class="tags">
-        <span class="tag" v-for="(tag, index) in item.effort_tags" :key="index">{{ tag }}</span>
-      </div> -->
     </div>
   </div>
 </template>
@@ -58,7 +58,7 @@ export default {
 }
 
 .item:hover {
-  background-color: rgba(94,44,165, .1);
+  background-color: #f1f1fb;
 }
 
 .item-head {

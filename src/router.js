@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import About from './views/About.vue'
 import Efforts from './views/Efforts.vue'
-import NewEffort from './views/NewEffort.vue'
+import NewEffortForm from './views/NewEffortForm.vue'
 
 Vue.use(Router)
 
@@ -22,9 +22,9 @@ export default new Router({
       name: 'efforts',
       component: Efforts
     }, {
-      path: '/efforts/new',
+      path: '/forms/new-effort',
       name: 'new Efforts',
-      component: NewEffort
+      component: NewEffortForm
     }
   ],
   linkActiveClass: 'active',

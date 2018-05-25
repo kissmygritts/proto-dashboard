@@ -8,13 +8,8 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql'
-})
-console.log(client)
-const apolloProvider = new VueApollo({
-  defaultClient: client
-})
+const client = new ApolloClient({ uri: 'http://localhost:4000/graphql' })
+const apolloProvider = new VueApollo({ defaultClient: client })
 
 Vue.use(VueApollo)
 
