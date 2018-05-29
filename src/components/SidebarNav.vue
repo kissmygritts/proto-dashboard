@@ -1,52 +1,72 @@
 <template>
   <div class="sidebar">
 
-    <div class="side-nav">
-      <ul class="nav-list">
-        <li class="nav-item">
-          <span class="icon is-large">
-            <img src="../assets/logo.png" alt="dog logo">
-          </span>
-          <span class="nav-text is-size-5">GUS</span>
-        </li>
-        <li class="nav-item">
-          <span class="icon is-large">
-            <i class="flaticon-compass"></i>
-          </span>
-          <span class="nav-text is-size-5">Dashboard</span>
-        </li>
-        <li class="nav-item">
-          <span class="icon is-large">
-            <i class="flaticon-notebook-5"></i>
-          </span>
-          <span class="nav-text is-size-5">Efforts</span>
-        </li>
-        <li class="nav-item">
-          <span class="icon is-large">
-            <i class="flaticon-network"></i>
-          </span>
-          <span class="nav-text is-size-5">Species</span>
-        </li>
-        <li class="nav-item">
-          <span class="icon is-large">
-            <i class="flaticon-route"></i>
-          </span>
-          <span class="nav-text is-size-5">Telemetry</span>
-        </li>
-        <li class="nav-item">
-          <span class="icon is-large">
-            <i class="flaticon-map-1"></i>
-          </span>
-          <span class="nav-text is-size-5">Maps</span>
-        </li>
-        <li class="nav-item">
-          <span class="icon is-large">
-            <i class="flaticon-compose"></i>
-          </span>
-          <span class="nav-text is-size-5">Forms</span>
-        </li>
-      </ul>
+    <div class="flex flex-column">
+
+      <div class="pa2 flex flex-column items-center mb1 mt2">
+        <div id="icon">
+          <img src="../assets/logo.png" alt="dog logo">
+        </div>
+      </div>
+
+      <div class="pa2 flex flex-column items-center mb1 nav-item">
+        <div class="icon mb1">
+          <i class="flaticon-compass"></i>
+        </div>
+        <div class="nav-item-text f6 lh-copy">
+          dashboard
+        </div>
+      </div>
+
+      <router-link to="/efforts">
+      <div class="pa2 flex flex-column items-center mb1 nav-item">
+        <div class="icon mb1">
+          <i class="flaticon-notebook-5"></i>
+        </div>
+        <div class="nav-item-text f6 lh-copy">
+          efforts
+        </div>
+      </div>
+      </router-link>
+
+      <div class="pa2 flex flex-column items-center mb1 nav-item">
+        <div class="icon mb1">
+          <i class="flaticon-network"></i>
+        </div>
+        <div class="nav-item-text f6 lh-copy">
+          species
+        </div>
+      </div>
+
+      <div class="pa2 flex flex-column items-center mb1 nav-item">
+        <div class="icon mb1">
+          <i class="flaticon-route"></i>
+        </div>
+        <div class="nav-item-text f6 lh-copy">
+          telemetry
+        </div>
+      </div>
+
+      <div class="pa2 flex flex-column items-center mb1 nav-item">
+        <div class="icon mb1">
+          <i class="flaticon-map-1"></i>
+        </div>
+        <div class="nav-item-text f6 lh-copy">
+          maps
+        </div>
+      </div>
+
+      <div class="pa2 flex flex-column items-center mb1 nav-item">
+        <div class="icon mb1">
+          <i class="flaticon-compose"></i>
+        </div>
+        <div class="nav-item-text f6 lh-copy">
+          forms
+        </div>
+      </div>
+
     </div>
+
   </div>
 </template>
 
@@ -66,29 +86,7 @@ img {
 .sidebar {
   background-color: var(--main-color);
   color: white;
-  min-width: 178px;
-}
-
-.logo {
-  height: 62px;
-  display: flex;
-  /* justify-content: space-between; */
-  align-items: center;
-  padding-left: 1rem;
-}
-
-.nav-list {
-  display: flex;
-  flex-direction: column;
-  padding-top: 6px;
-}
-
-.nav-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 4px;
-  padding-bottom: 4px;
+  min-width: 64px;
 }
 
 .nav-item:hover {
@@ -97,10 +95,6 @@ img {
 
 .nav-item--active {
   background-color: rgba(255, 255, 255, .25);
-}
-
-.nav-text {
-  padding-left: .5rem;
 }
 
 [class^="flaticon-"]:before, [class*="flaticon-"]:before,
