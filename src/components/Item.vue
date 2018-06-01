@@ -13,16 +13,24 @@
     <div class="item-footer">
       <div class="level">
         <div class="level-left">
+
           <div class="level-item">
             <div class="tags">
               <!-- <span class="tag" v-for="(tag, index) in item.effort_status" :key="index">{{ tag }}</span> -->
               <span class="tag">{{ item.effort_status }}</span>
             </div>
           </div>
+
+          <div class="level-item">
+            <div class="tags">
+              <span class="tag">{{ item.activities.length }} Activities</span>
+            </div>
+          </div>
+
         </div>
         <div class="level-right">
           <div class="level-item">
-            <span class="more-info"><i class="flaticon-more-1"></i></span>
+            <span class="more-info" @click="followLink(item.id)"><i class="flaticon-more-1"></i></span>
           </div>
         </div>
       </div>
@@ -34,7 +42,12 @@
 <script>
 export default {
   name: 'Item',
-  props: [ 'item' ]
+  props: [ 'item' ],
+  methods: {
+    followLink: function (id) {
+      this.$router.push({ name: 'effort', params: { id: id } })
+    }
+  }
 }
 </script>
 
@@ -82,5 +95,6 @@ export default {
 
 .more-info {
   color: var(--main-color);
+  cursor: pointer;
 }
 </style>

@@ -54,7 +54,7 @@
 <script>
 import ItemList from '@/components/ItemList.vue'
 import StatusBar from '@/components/StatusBar.vue'
-import ALL_EFFORTS_QUERY from '../graphql/AllEffortsQuery'
+import { ALL_EFFORTS_QUERY } from '../graphql/Effort_AllQuery'
 
 export default {
   name: 'effort',

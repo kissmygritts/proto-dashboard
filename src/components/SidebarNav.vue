@@ -18,16 +18,16 @@
         </div>
       </div>
 
-      <router-link to="/efforts">
-      <div class="pa2 flex flex-column items-center mb1 nav-item">
+      <!-- <router-link to="/efforts"> -->
+      <router-link to="/efforts" class="pa2 flex flex-column items-center mb1 nav-item">
         <div class="icon mb1">
           <i class="flaticon-notebook-5"></i>
         </div>
         <div class="nav-item-text f6 lh-copy">
           efforts
         </div>
-      </div>
       </router-link>
+      <!-- </router-link> -->
 
       <div class="pa2 flex flex-column items-center mb1 nav-item">
         <div class="icon mb1">
@@ -56,14 +56,14 @@
         </div>
       </div>
 
-      <div class="pa2 flex flex-column items-center mb1 nav-item">
+      <router-link to="/forms" class="pa2 flex flex-column items-center mb1 nav-item">
         <div class="icon mb1">
           <i class="flaticon-compose"></i>
         </div>
         <div class="nav-item-text f6 lh-copy">
           forms
         </div>
-      </div>
+      </router-link>
 
     </div>
 
@@ -86,7 +86,7 @@ img {
 .sidebar {
   background-color: var(--main-color);
   color: white;
-  min-width: 64px;
+  width: 80px;
 }
 
 .nav-item:hover {

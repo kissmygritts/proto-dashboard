@@ -33,3 +33,10 @@ body {
   background-color: #6958d0;
 }
 
+a.nav-item {
+  color: white;
+}
+
+.main { color: var(--main-color);}
+.bg-main { background-color: var(--main-color);}
+.b--main { border-color: var(--main-color);}

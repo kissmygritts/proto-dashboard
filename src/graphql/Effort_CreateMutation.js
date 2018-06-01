@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost'
 
-export default gql`
+export const CREATE_EFFORT_MUTATION = gql`
   mutation CreateEffort ($input: EffortInput!) {
     createEffort(input: $input) {
       id

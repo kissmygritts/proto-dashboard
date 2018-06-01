@@ -71,8 +71,8 @@
 </template>
 
 <script>
-import CREATE_EFFORT_MUTATION from '../../graphql/CreateEffort'
-import ALL_EFFORTS_QUERY from '../../graphql/AllEffortsQuery'
+import { CREATE_EFFORT_MUTATION } from '../../graphql/Effort_CreateMutation'
+import { ALL_EFFORTS_QUERY } from '../../graphql/Effort_AllQuery'
 
 export default {
   name: 'NewEffortFormContent',
