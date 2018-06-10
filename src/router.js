@@ -7,6 +7,7 @@ import EffortDetails from './views/EffortDetails.vue'
 import NewEffortForm from './views/NewEffortForm.vue'
 import NewActivityForm from './views/NewActivityForm.vue'
 import autocomplete from './components/inputs/Autocomplete.vue'
+import DataEntryWorkflow from './views/DataEntryWorkflow'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       path: '/autocomplete',
       name: 'autocomplete',
       component: autocomplete
+    },
+    {
+      path: '/forms/data-entry',
+      name: 'data entry',
+      component: DataEntryWorkflow
     }
   ],
   linkActiveClass: 'active',
