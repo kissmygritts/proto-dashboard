@@ -172,15 +172,15 @@ export default {
     activityInput () {
       if (this.csv) {
         return this.csv.data.map(m => ({
-          id: this.animalId,
-          event_id: this.eventId,
+          // id: this.animalId,
+          event_id: '0e6f8254-7484-45d5-a73f-16ddbfcfb10b',
           species_id: m.species,
-          ind_id: m.ind_id,
+          ind_id: parseInt(m.ind_id),
           sex: m.sex,
           age_class: m.age_class,
-          count: m.count,
-          status: m.status,
-          reencounter: m.reencounter,
+          n: parseInt(m.count),
+          animal_status: m.status,
+          reencounter: m.reencounter === 'TRUE',
           observer: m.observer,
           comments: m.comments
         }))
