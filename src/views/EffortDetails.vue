@@ -27,7 +27,13 @@
                   <td class="tc pv3 pr3 bb b--black-20" colspan="3">This effort doesn't have any activities yet <span class="f5">&#x1F61E;</span></td>
               </tr>
               <tr v-else v-for="(activity, index) in effortById.activities" :key="index">
-                <td class="pv3 pr3 bb b--black-20">{{ activity.activity_name }}</td>
+                <td class="pv3 pr3 bb b--black-20">
+                  <router-link
+                    :to="{ name: 'activity', params: { id: activity.id } }"
+                  >
+                    {{ activity.activity_name }}
+                  </router-link>
+                </td>
                 <td class="pv3 pr3 bb b--black-20">{{ activity.activity_start_date }}</td>
                 <td class="pv3 pr3 bb b--black-20">{{ activity.activity_duration }} {{ activity.activity_time_frame }}</td>
               </tr>

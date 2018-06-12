@@ -8,6 +8,7 @@ import NewEffortForm from './views/NewEffortForm.vue'
 import NewActivityForm from './views/NewActivityForm.vue'
 import autocomplete from './components/inputs/Autocomplete.vue'
 import DataEntryWorkflow from './views/DataEntryWorkflow'
+import ActivityDetails from './views/ActivityDetails'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
       path: '/efforts/:id',
       name: 'effort',
       component: EffortDetails
+    },
+    {
+      path: '/activities/:id',
+      name: 'activity',
+      component: ActivityDetails
     },
     {
       path: '/autocomplete',
