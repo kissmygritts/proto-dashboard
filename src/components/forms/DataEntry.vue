@@ -48,8 +48,6 @@
 
     </form>
 
-    <hr>
-
     <!-- csv data -->
     <div v-if="isSuccess">
 
@@ -57,37 +55,48 @@
         Below are the contents of the uploaded .CSV file.
       </p>
 
-      <!-- table of csv -->
+      <p v-if="hasPapaParseError" class="mid-gray pa3 br1 bg-washed-red mb3">
+        There was an error parsing your CSV file. Please double check your file for errors.
+        Below is an explanation of the error. See <a href="https://github.com/kissmygritts/proto-dashboard/issues/7">this page</a>
+        for an explanation of common errors.
+
+        <pre class="bg-washed-red dark-red"><code>{{ csv.errors }}</code></pre>
+      </p>
+
+      <!-- table of displayData -->
       <div class="overflow-auto">
         <table class="f6 w-100 mw8 center" cellspacing="0">
           <thead>
             <tr>
-              <th v-for="(field, index) in csv.meta.fields" :key="index" class="fw6 bb b--black-20 tl pr3 bg-white">{{ field }}</th>
+              <th v-for="(field, index) in displayFields" :key="index" class="fw6 bb b--black-20 tl pr3 bg-white">{{ field }}</th>
             </tr>
           </thead>
           <tbody class="lh-copy">
             <tr v-for="(row, index) in csv.data" :key="index">
-              <td v-for="(field, index) in csv.meta.fields" :key="index" class="pv3 pr3 bb b--black-20">{{ row[field] }}</td>
+              <td v-for="(field, index) in displayFields" :key="index" class="pv3 pr3 bb b--black-20">{{ row[field] }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <hr>
+    <button type="button" @click="submitUpload" class="f6 link dim br2 ba pv2 mb2 dib purple bg-white b--purple">Upload CSV</button>
 
     <pre><code>{{ eventInput }}</code></pre>
-    <pre><code>{{ activityInput }}</code></pre>
+    <pre><code>{{ animalInput }}</code></pre>
   </div>
 </template>
 
 <script>
-import format from 'date-fns/format'
 import VueSimpleSuggest from 'vue-simple-suggest'
 import Papa from 'papaparse'
 import { v4 } from 'uuid'
+
 import { EFFORT_SELECTION_LIST_QUERY } from '../../graphql/Effort_SelectionListQuery'
 import { ACTIVITY_SELECTION_LIST_QUERY } from '../../graphql/Activity_SelectionListQuery'
+import { BULK_UPLOAD_MUTATION } from '../../graphql/DataEntry_BulkUploadMutation'
+
+import { formatTimestamp } from '../../utils'
 
 const STATUS_INITIAL = 0
 const STATUS_SAVING = 1
@@ -124,7 +133,17 @@ export default {
       uploadedError: null,
       currentStatus: null,
       uploadFieldName: 'files',
-      csv: null
+      csv: null,
+      displayFields: [
+        'ind_id',
+        'date',
+        'start_time',
+        'end_time',
+        'sex',
+        'age',
+        'count',
+        'labid'
+      ]
     }
   },
 
@@ -156,11 +175,11 @@ export default {
     },
     eventInput () {
       if (this.csv) {
-        return this.csv.data.map(m => ({
-          // id: this.eventId,
+        return this.csv.data.map((m, i) => ({
+          id: this.ids[i].event,
           activity_id: this.activity.selected.id,
-          event_date: format(new Date(m.date), 'YYYY-MM-DD'),
-          event_time: format(new Date(`${m.date} ${m.start_time}`), 'HH:mm:SSZ'),
+          event_timestamp: formatTimestamp(m.date, m.start_time),
+          event_timestamp_end: formatTimestamp(m.date, m.end_time),
           event_type: m.event_type,
           x: parseFloat(m.x),
           y: parseFloat(m.y),
@@ -169,32 +188,33 @@ export default {
         }))
       }
     },
-    activityInput () {
+    animalInput () {
       if (this.csv) {
-        return this.csv.data.map(m => ({
-          // id: this.animalId,
-          event_id: '0e6f8254-7484-45d5-a73f-16ddbfcfb10b',
-          species_id: m.species,
-          ind_id: parseInt(m.ind_id),
-          sex: m.sex,
-          age_class: m.age_class,
-          n: parseInt(m.count),
-          animal_status: m.status,
-          reencounter: m.reencounter === 'TRUE',
-          observer: m.observer,
-          comments: m.comments
-        }))
+        return this.csv.data.map((m, i) => {
+          console.log(m)
+
+          return ({
+            id: this.ids[i].animal,
+            event_id: this.ids[i].event,
+            species_id: m.species,
+            ind_id: parseInt(m.ind_id),
+            sex: m.sex,
+            age_class: m.age_class,
+            n: parseInt(m.count),
+            animal_status: m.status,
+            reencounter: m.reencounter === 'TRUE',
+            comments: m.comments,
+            observer: m.observer
+          })
+        })
       }
     },
-    eventId () {
-      return v4()
-    },
-    animalId () {
-      return v4()
-    },
-    startTimes () {
+    ids () {
       if (this.csv) {
-        return this.csv.data.map(m => format(new Date(`${m.date} ${m.start_time}`), 'HH:mm:SSZ'))
+        return Array.apply(null, Array(this.csv.data.length)).map(m => ({
+          event: v4(),
+          animal: v4()
+        }))
       }
     }
   },
@@ -221,7 +241,7 @@ export default {
       // console.log('fileList[0] : ', fileList[0])
       Papa.parse(fileList[0], {
         delimiter: ',',
-        newline: '\n',
+        newline: '\r\n',
         header: true,
         complete: results => {
           this.csv = results
@@ -229,6 +249,19 @@ export default {
           console.log(results)
         }
       })
+    },
+    submitUpload () {
+      this.$apollo.mutate({
+        mutation: BULK_UPLOAD_MUTATION,
+        variables: {
+          events: this.eventInput,
+          animals: this.animalInput
+        }
+      })
+        .then(data => {
+          console.log(data)
+          this.$router.push(`/efforts/${this.effort.selected.id}`)
+        })
     }
   }
 }
