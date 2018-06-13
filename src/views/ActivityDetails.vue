@@ -1,5 +1,5 @@
 <template>
-  <div class="content-wrapper flex flex-row items-start mt3 w-90 center">
+  <div class="content-wrapper flex flex-row items-start mv3 w-100 ph4 center">
 
     <!-- main content panel -->
     <div id="document" class="bg-white w-70 pa3 br2" v-if="!$apollo.loading">
@@ -56,24 +56,90 @@
         </table>
       </div>
 
+      <!-- encounters map -->
       <h2 class="f3 lh-title mt3 mb2">Encounter Map</h2>
       <p class="f5 lh-copy ph2">
         The capture locations of all the animals encountered during this activity
         are shown in the map below. The map is interactive. You can click on each
         point on the map for information about that animal.
-        <!-- TODO: create map with leaflet -->
       </p>
+      <div class="leaflet mt3">
+        <!-- TODO: set the zoom of the map dynamically based on the bounds: https://github.com/KoRiGaN/Vue2Leaflet#faq-->
+        <l-map :bounds="bounds" :zoom="6" ref="map">
+          <l-tile-layer url="http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"></l-tile-layer>
+          <!-- TODO: add marker popups, https://github.com/KoRiGaN/Vue2Leaflet/blob/master/examples/src/components/MarkerPopup.vue -->
+          <l-marker
+            v-for="(point, index) in mapPoints"
+            :key="index"
+            :lat-lng="point" />
+        </l-map>
+      </div>
 
-      <pre class="mt5"><code>{{ $data }}</code></pre>
+      <!-- <pre class="mt5"><code>{{ $data }}</code></pre> -->
+    </div>
+
+    <!-- side panel -->
+    <div id="metadata-wrapper" class="w-30 ml3 mid-gray">
+
+      <!-- metadata box -->
+      <div id="metadata">
+
+        <ul class="list pl0 ml0 center">
+          <li class="pa1 main">
+            Activity Metadata
+          </li>
+          <li class="pa2">
+            <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
+              <dd class="mb1 f6 fw6 ml0">Type</dd>
+              <dd class="f5 fw4 ml0">{{ activity.activity_type }}</dd>
+            </dl>
+          </li>
+          <li class="pa2">
+            <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
+              <dd class="mb1 f6 fw6 ml0">Start Date</dd>
+              <dd class="f5 fw4 ml0">{{ activity.activity_start_date }}</dd>
+            </dl>
+          </li>
+          <li class="pa2">
+            <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
+              <dd class="mb1 f6 fw6 ml0">Duration</dd>
+              <dd class="f5 fw4 ml0">{{ activity.activity_duration }} {{ activity.activity_time_frame }}</dd>
+            </dl>
+          </li>
+          <li class="pa2" v-if="activity.encounters">
+            <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
+              <dd class="mb1 f6 fw6 ml0">No. Encounters</dd>
+              <dd class="f5 fw4 ml0">{{ activity.encounters.length }}</dd>
+            </dl>
+          </li>
+          <li class="pa2">
+            <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
+              <dd class="mb1 f6 fw6 ml0">Activity ID</dd>
+              <dd class="f6 fw4 ml0">{{ activity.id }}</dd>
+            </dl>
+          </li>
+        </ul>
+
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
+import L from 'leaflet'
 import { ACTIVITY_BY_ID_QUERY } from '../graphql/Activity_ByIdQuery'
+
+// import 'leaflet/dist/leaflet.css'
 
 export default {
   name: 'ActivityDetails',
+
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker
+  },
 
   data () {
     return {
@@ -86,7 +152,10 @@ export default {
         { prop: 'age_class', alias: 'age' },
         { prop: 'n', alias: 'count' },
         { prop: 'animal_status', alias: 'status' }
-      ]
+      ],
+      mapData: {
+        center: L.latLng(40.2908, -117.874)
+      }
     }
   },
 
@@ -94,6 +163,33 @@ export default {
     hasEncounters () {
       if (!this.$apollo.loading) {
         return this.activity.encounters.length > 0
+      }
+    },
+    mapPoints () {
+      if (!this.$apollo.loading) {
+        return this.activity.encounters.map(m => L.latLng([m.y, m.x]))
+      }
+    },
+    bounds () {
+      if (this.mapPoints) {
+        return L.latLngBounds(this.mapPoints)
+      }
+    },
+    mapCenter () {
+      if (this.mapPoints) {
+        const arrLength = this.mapPoints.length
+
+        const lng = this.mapPoints
+          .map(m => m.lng)
+          .reduce((acc, curr) => acc + curr)
+        const lat = this.mapPoints
+          .map(m => m.lat)
+          .reduce((acc, curr) => acc + curr)
+
+        const centroidLng = lng / arrLength
+        const centroidLat = lat / arrLength
+
+        return L.latLng(centroidLat, centroidLng)
       }
     }
   },
@@ -111,6 +207,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.leaflet {
+  height: 300px;
+}
 </style>

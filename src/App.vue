@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <sidebar-nav />
-    <div class="main-panel">
+    <div class="main-panel bg-near-white">
       <status-bar />
       <router-view/>
     </div>
@@ -39,7 +39,7 @@ export default {
 
 .main-panel {
   flex-grow: 1;
-  background-color: var(--near-white);
+  /* background-color: var(--near-white); */
   overflow-y: auto;
 }
 </style>
