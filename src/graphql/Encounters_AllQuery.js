@@ -4,6 +4,7 @@ export const ALL_ENCOUNTERS_QUERY = gql`
   query {
     encounters: encounters {
       activity_id
+      activity_name
       event_id
       animal_id
       species_id
