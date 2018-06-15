@@ -1,20 +1,22 @@
 <template>
-  <div class="content-wrapper flex flex-row items-start mt3 w-90 center">
+  <div class="content-wrapper flex flex-row items-start mv3 w-100 ph4 center">
 
     <!-- main content panel -->
     <div id="document" class="bg-white w-70 pa3 br2">
-      <h1 class="f2 mb1">{{ effortById.effort_name }}</h1>
+      <h1 class="f2 lh-title ttc">{{ effortById.effort_name }}</h1>
 
-      <div class="mt3">
-        <h4 class="f4 fw5 lh-copy">Effort Description</h4>
-        <p class="f5 lh-copy">{{ effortById.effort_purpose }}</p>
-      </div>
+      <h2 class="f3 lh-title mt3 mb2">Effort Description</h2>
+      <p class="f5 lh-copy ph2">{{ effortById.effort_purpose }}</p>
 
-      <div id="activities" class="mt4">
-        <h4 class="f4 fw5 lh-copy">Activities</h4>
+      <h2 class="f3 lh-title mt3 mb2">Activities Table</h2>
+      <p class="f5 lh-copy ph2">
+        All the activities for this effort are displayed in the table below.
+        This is short summary of the data. For more information about an
+        individual activity click the activity name.
+      </p>
 
-        <div id="activity-table" class="mt3">
-          <table class="f6 w-100 mw8 center">
+      <div id="activity-table" class="mt3">
+        <table class="f6 w-100 mw8 center">
             <thead>
               <tr>
                 <th class="fw6 bb bb-black-20 tl pb3 pr3 bg-white">Activity Name</th>
@@ -39,65 +41,58 @@
               </tr>
             </tbody>
           </table>
-        </div>
       </div>
+
     </div>
 
     <!-- side panel -->
-    <div id="metadata-wrapper" class="pl4 w-30">
+    <div id="metadata-wrapper" class="w-30 ml3 mid-gray">
 
       <!-- metadata panel -->
-      <div id="metadata" class="mb2">
-        <ul class="list pl0 ml0 center">
+      <div id="metadata">
 
+        <ul class="list pl0 ml0 center">
           <li class="pa1 main">
             Effort Metadata
           </li>
-
           <li class="pa2">
             <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
               <dd class="mb1 f6 fw6 ml0">Agency</dd>
               <dd class="f5 fw4 ml0">{{ effortById.effort_agency }}</dd>
             </dl>
           </li>
-
           <li class="pa2">
             <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
               <dd class="mb1 f6 fw6 ml0">Status</dd>
               <dd class="f5 fw4 ml0">{{ effortById.effort_status }}</dd>
             </dl>
           </li>
-
           <li class="pa2">
             <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
               <dd class="mb1 f6 fw6 ml0">Created At</dd>
               <dd class="f5 fw4 ml0">{{ effortById.created_at }}</dd>
             </dl>
           </li>
-
           <li class="pa2">
             <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
               <dd class="mb1 f6 fw6 ml0">Updated At</dd>
               <dd class="f5 fw4 ml0">{{ effortById.updated_at }}</dd>
             </dl>
           </li>
-
           <li class="pa2">
             <dl class="fl fn-l w-50 dib-l w-auto-l lh-title">
               <dd class="mb1 f6 fw6 ml0">Effort ID</dd>
               <dd class="f7 fw4 ml0">{{ effortById.id }}</dd>
             </dl>
           </li>
-
         </ul>
-      </div>
 
+      </div>
       <!-- related content panel -->
       <!-- <div id="related-data" class="bg-white ba pa1">
         related data
       </div> -->
     </div>
-
   </div>
 </template>
 

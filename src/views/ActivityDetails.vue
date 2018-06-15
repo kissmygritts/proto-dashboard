@@ -1,8 +1,8 @@
 <template>
-  <div class="content-wrapper flex flex-row items-start mv3 w-100 ph4 center">
+  <div class="content-wrapper flex flex-row items-start mv3 w-100 ph4 center" v-if="!$apollo.loading">
 
     <!-- main content panel -->
-    <div id="document" class="bg-white w-70 pa3 br2" v-if="!$apollo.loading">
+    <div id="document" class="bg-white w-70 pa3 br2">
       <h1 class="f2 lh-title ttc">{{ activity.activity_name }}</h1>
 
       <h2 class="f3 lh-title mt3 mb2">Activity Description</h2>
@@ -33,14 +33,21 @@
               </th>
             </tr>
           </thead>
-          <tbody>
-            <!-- if there aren't encounters -->
-            <tr v-if="!hasEncounters">
-              <td class="tc pv3 pr3 bb b--black-20 center" colspan="6">This activity doesn't have any encounters yet <span class="f5">&#x1F61E;</span></td>
+
+          <!-- if there aren't encounters -->
+          <tbody v-if="!hasEncounters">
+            <tr>
+              <td class="tc pv2 pr3" colspan="6">This activity doesn't have any encounters yet <span class="f5">&#x1F61E;</span></td>
             </tr>
-            <!-- if there are encounters -->
+            <tr>
+              <td class="tc pv2 pr3" colspan="6">
+                <router-link to="/forms/data-entry" class="f6 link dim ph3 pv2 bg-main white br2 hover-white">Add Encounters</router-link>
+              </td>
+            </tr>
+          </tbody>
+          <!-- if there are encounters -->
+          <tbody v-else>
             <tr
-              v-else
               v-for="(encounter, index) in activity.encounters"
               :key="index"
             >
@@ -57,6 +64,7 @@
       </div>
 
       <!-- encounters map -->
+      <div v-if="hasEncounters">
       <h2 class="f3 lh-title mt3 mb2">Encounter Map</h2>
       <p class="f5 lh-copy ph2">
         The capture locations of all the animals encountered during this activity
@@ -73,6 +81,7 @@
             :key="index"
             :lat-lng="point" />
         </l-map>
+      </div>
       </div>
 
       <!-- <pre class="mt5"><code>{{ $data }}</code></pre> -->
