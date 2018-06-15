@@ -68,12 +68,12 @@
         <table class="f6 w-100 mw8 center" cellspacing="0">
           <thead>
             <tr>
-              <th v-for="(field, index) in displayFields" :key="index" class="fw6 bb b--black-20 tl pr3 bg-white">{{ field }}</th>
+              <th v-for="(field, index) in displayFields" :key="index" class="fw6 bb b--black-20 tl pr3 bg-white">{{ field.alias }}</th>
             </tr>
           </thead>
           <tbody class="lh-copy">
             <tr v-for="(row, index) in csv.data" :key="index">
-              <td v-for="(field, index) in displayFields" :key="index" class="pv3 pr3 bb b--black-20">{{ row[field] }}</td>
+              <td v-for="(field, index) in displayFields" :key="index" class="pv3 pr3 bb b--black-20">{{ row[field.prop] }}</td>
             </tr>
           </tbody>
         </table>
@@ -135,14 +135,14 @@ export default {
       uploadFieldName: 'files',
       csv: null,
       displayFields: [
-        'ind_id',
-        'date',
-        'start_time',
-        'end_time',
-        'sex',
-        'age',
-        'count',
-        'labid'
+        { prop: 'ind_id', alias: 'ndowid' },
+        { prop: 'date', alias: 'date' },
+        { prop: 'start_time', alias: 'start' },
+        { prop: 'end_time', alias: 'end' },
+        { prop: 'sex', alias: 'sex' },
+        { prop: 'age_class', alias: 'age' },
+        { prop: 'count', alias: 'count' },
+        { prop: 'labid', alias: 'labId' }
       ]
     }
   },
@@ -258,7 +258,7 @@ export default {
       })
         .then(data => {
           console.log(data)
-          this.$router.push(`/efforts/${this.effort.selected.id}`)
+          this.$router.push(`/activities/${this.activity.selected.id}`)
         })
     }
   }

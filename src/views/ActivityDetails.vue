@@ -81,7 +81,8 @@
       <div class="leaflet mt3">
         <!-- TODO: set the zoom of the map dynamically based on the bounds: https://github.com/KoRiGaN/Vue2Leaflet#faq-->
         <l-map :bounds="bounds" :zoom="6" ref="map">
-          <l-tile-layer url="http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"></l-tile-layer>
+          <!-- <l-tile-layer url="http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"></l-tile-layer> -->
+          <l-tile-layer :url="mapData.source" />
           <!-- TODO: add marker popups, https://github.com/KoRiGaN/Vue2Leaflet/blob/master/examples/src/components/MarkerPopup.vue -->
           <l-marker
             v-for="(point, index) in mapPoints"
@@ -170,7 +171,9 @@ export default {
         { prop: 'animal_status', alias: 'status' }
       ],
       mapData: {
-        center: L.latLng(40.2908, -117.874)
+        center: L.latLng(40.2908, -117.874),
+        source: 'http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg'
+
       }
     }
   },
