@@ -2,9 +2,11 @@
   --main-grey: #eaeaea;
   --near-white: #f0f0f0;
   --very-white: #F7F7F7;
-  /* --main-color: #5e2ca5; */
-  --main-color: #6958d0;
-  /* --main-color: #127d56; */
+  /* --main-color: #4056a1; */
+  /* --main-color: #3d646d; */
+  /* --main-color: #525793; */
+  --main-color: #575b8e;
+  --main-color-washed: rgba(88,91,208, .1);
 }
 
 *, *:before, *:after {

@@ -102,7 +102,7 @@
 import VueSimpleSuggest from 'vue-simple-suggest'
 import 'vue-simple-suggest/dist/styles.css'
 import { EFFORT_SELECTION_LIST_QUERY } from '../../graphql/Effort_SelectionListQuery'
-import { ALL_ACTIVITIES_QUERY } from '../../graphql/Activity_AllQuery'
+// import { ALL_ACTIVITIES_QUERY } from '../../graphql/Activity_AllQuery'
 import { CREATE_ACTIVITY_MUTATION } from '../../graphql/Activity_CreateMutation'
 
 export default {
@@ -146,23 +146,24 @@ export default {
         mutation: CREATE_ACTIVITY_MUTATION,
         variables: {
           input: newInput
-        },
-        update: (store, { data: { createActivity } }) => {
-          const data = store.readQuery({ query: ALL_ACTIVITIES_QUERY })
-          data.activities.push(createActivity)
-          store.writeQuery({ query: ALL_ACTIVITIES_QUERY, data })
-        },
-        optimisticResponse: {
-          __typeName: 'Mutation',
-          createActivity: {
-            __typename: 'Activity',
-            id: -1,
-            ...newInput
-          }
         }
+        // update: (store, { data: { createActivity } }) => {
+        //   const data = store.readQuery({ query: ALL_ACTIVITIES_QUERY })
+        //   data.activities.push(createActivity)
+        //   store.writeQuery({ query: ALL_ACTIVITIES_QUERY, data })
+        // },
+        // optimisticResponse: {
+        //   __typeName: 'Mutation',
+        //   createActivity: {
+        //     __typename: 'Activity',
+        //     id: -1,
+        //     ...newInput
+        //   }
+        // }
       })
         .then(data => {
           console.log(data)
+          this.$router.push(`/efforts/${this.input.effort_id}`)
         })
         .catch(error => console.log(error))
     }

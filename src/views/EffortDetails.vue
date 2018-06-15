@@ -7,7 +7,7 @@
 
       <div class="mt3">
         <h4 class="f4 fw5 lh-copy">Effort Description</h4>
-        <p class="f5 lh-copy">1 {{ effortById.effort_purpose }}</p>
+        <p class="f5 lh-copy">{{ effortById.effort_purpose }}</p>
       </div>
 
       <div id="activities" class="mt4">
@@ -117,7 +117,9 @@ export default {
 
   computed: {
     hasActivities () {
-      return this.effortById.activities.length !== 0
+      if (this.effortById) {
+        return this.effortById.activities.length !== 0
+      }
     }
   },
 
@@ -128,7 +130,8 @@ export default {
         return {
           effortId: this.effortId
         }
-      }
+      },
+      fetchPolicy: 'network-only'
     }
   }
 }

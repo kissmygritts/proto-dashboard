@@ -191,8 +191,6 @@ export default {
     animalInput () {
       if (this.csv) {
         return this.csv.data.map((m, i) => {
-          console.log(m)
-
           return ({
             id: this.ids[i].animal,
             event_id: this.ids[i].event,
