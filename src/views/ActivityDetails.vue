@@ -3,7 +3,14 @@
 
     <!-- main content panel -->
     <div id="document" class="bg-white w-70 pa3 br2">
-      <h1 class="f2 lh-title ttc">{{ activity.activity_name }}</h1>
+      <h1 class="f2 lh-title ttc mb2">{{ activity.activity_name }}</h1>
+
+      <div id="action-buttons">
+        <a @click="goBack" class="f6 link br2 ba ph3 pv2 dib blue mr2 bg-animate hover-bg-blue hover-white">Back</a>
+        <router-link to="/forms/data-entry" class="f6 link br2 ba ph3 pv2 dib main mr2 bg-animate hover-bg-main hover-white">Upload Data</router-link>
+        <a id="delete-button" class="f6 link br2 ba ph3 pv2 dib orange mr2 bg-animate hover-bg-orange hover-white">Update Effort</a>
+        <a id="delete-button" class="f6 link br2 ba ph3 pv2 dib red mr2 bg-animate hover-bg-red hover-white">Delete Effort</a>
+      </div>
 
       <h2 class="f3 lh-title mt3 mb2">Activity Description</h2>
       <p class="f5 lh-copy ph2">{{ activity.activity_description }}</p>
@@ -212,6 +219,12 @@ export default {
         }
       }
     }
+  },
+
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>
@@ -219,5 +232,9 @@ export default {
 <style scoped>
 .leaflet {
   height: 300px;
+}
+
+#delete-button {
+  cursor: not-allowed;
 }
 </style>

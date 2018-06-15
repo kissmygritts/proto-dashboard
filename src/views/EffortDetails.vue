@@ -3,7 +3,14 @@
 
     <!-- main content panel -->
     <div id="document" class="bg-white w-70 pa3 br2">
-      <h1 class="f2 lh-title ttc">{{ effortById.effort_name }}</h1>
+      <h1 class="f2 lh-title ttc mb2">{{ effortById.effort_name }}</h1>
+
+      <div id="action-buttons">
+        <a @click="goBack" class="f6 link br2 ba ph3 pv2 dib blue mr2 bg-animate hover-bg-blue hover-white">Back</a>
+        <router-link to="/forms/new-activity" class="f6 link br2 ba ph3 pv2 dib main mr2 bg-animate hover-bg-main hover-white">Add Activiy</router-link>
+        <a id="delete-button" class="f6 link br2 ba ph3 pv2 dib orange mr2 bg-animate hover-bg-orange hover-white">Update Effort</a>
+        <a id="delete-button" class="f6 link br2 ba ph3 pv2 dib red mr2 bg-animate hover-bg-red hover-white">Delete Effort</a>
+      </div>
 
       <h2 class="f3 lh-title mt3 mb2">Effort Description</h2>
       <p class="f5 lh-copy ph2">{{ effortById.effort_purpose }}</p>
@@ -128,10 +135,18 @@ export default {
       },
       fetchPolicy: 'network-only'
     }
+  },
+
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+#delete-button {
+  cursor: not-allowed;
+}
 </style>

@@ -40,6 +40,9 @@ a.nav-item {
   color: white;
 }
 
+/* main color as tachyons styels */
 .main { color: var(--main-color);}
 .bg-main { background-color: var(--main-color);}
 .b--main { border-color: var(--main-color);}
+.hover-bg-main:hover,
+.hover-bg-main:focus { background-color: var(--main-color); }
