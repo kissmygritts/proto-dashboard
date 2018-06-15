@@ -3,18 +3,9 @@
 
     <div class="flex flex-column">
 
-      <div class="pa2 flex flex-column items-center mb1 mt2">
+      <div class="pa2 flex flex-column items-center mb1 mt2 pointer" @click="goHome">
         <div id="icon">
           <img src="../assets/logo.png" alt="dog logo">
-        </div>
-      </div>
-
-      <div class="pa2 flex flex-column items-center mb1 nav-item">
-        <div class="icon mb1">
-          <i class="flaticon-compass"></i>
-        </div>
-        <div class="nav-item-text f6 lh-copy">
-          dashboard
         </div>
       </div>
 
@@ -73,7 +64,13 @@
 <script>
 import '../assets/css/logos/flaticon.css'
 export default {
-  name: 'SidebarNav'
+  name: 'SidebarNav',
+
+  methods: {
+    goHome () {
+      this.$router.push({name: 'home'})
+    }
+  }
 }
 </script>
 
