@@ -5,8 +5,7 @@
       This form will walk you through the data entry workflow. You Follow the steps as outlined below.
     </p>
 
-    <form class="w-100" enctype="multipart/form-data">
-
+    <div class="w-100">
       <!-- select effort id -->
       <div class="mb3">
         <label for="effort-name" class="f6 b db mb1">Effort Name</label>
@@ -36,7 +35,7 @@
       </div>
 
       <!-- upload csv of animals data -->
-      <div class="mb3">
+      <!-- <div class="mb3">
         <label for="uploads" class="f6 b db mb1">Upload Files</label>
         <input
           type="file"
@@ -44,9 +43,23 @@
           class="button-reset"
           @change="filesChange($event.target.name, $event.target.files)"
         >
-      </div>
+      </div> -->
+    </div>
 
+    <form id="upload-button" enctype="multipart/form-data" class="mb2">
+      <input type="file" id="upload" name="upload" class="inputfile" @change="filesChange" accept=".csv" multiple>
+      <label for="upload" class="f6 link br2 ba pv2 ph3 dip blue bg-white b--blue">Choose a file</label>
     </form>
+
+    <div id="uploads" v-if="this.files.successMsg === 2">
+      <span
+        class="f6 br1 ba pv1 ph2 bg-green white b--green dib mr2"
+        v-for="(name, index) in this.files.itemsNames"
+        :key="index"
+      >
+        {{ name }}
+      </span>
+    </div>
 
     <!-- csv data -->
     <div v-if="isSuccess">
@@ -79,7 +92,7 @@
         </table>
       </div>
     </div>
-
+    <hr>
     <button type="button" @click="submitUpload" class="f6 link dim br2 ba pv2 mb2 dib purple bg-white b--purple">Upload CSV</button>
 
     <pre><code>{{ eventInput }}</code></pre>
@@ -143,7 +156,17 @@ export default {
         { prop: 'age_class', alias: 'age' },
         { prop: 'count', alias: 'count' },
         { prop: 'labid', alias: 'labId' }
-      ]
+      ],
+      files: {
+        items: [],
+        itemsAdded: '',
+        itemsNames: [],
+        itemsSizes: [],
+        formData: '',
+        successMsg: '',
+        errorMsg: '',
+        fileList: null
+      }
     }
   },
 
@@ -207,6 +230,16 @@ export default {
         })
       }
     },
+    labidInput () {
+      if (this.csv) {
+        return this.csv.data.map((m, i) => {
+          return ({
+            animal_id: this.ids[i].animal,
+            labid: m.lab_id
+          })
+        })
+      }
+    },
     ids () {
       if (this.csv) {
         return Array.apply(null, Array(this.csv.data.length)).map(m => ({
@@ -233,11 +266,27 @@ export default {
     onSuggestSelectActivity (suggest) {
       this.activity.selected = suggest
     },
-    filesChange (fieldName, fileList) {
-      if (!fileList.length) return null
+    filesChange (e) {
+      let files = e.target.files || e.dataTransfer.files
 
-      // console.log('fileList[0] : ', fileList[0])
-      Papa.parse(fileList[0], {
+      this.files.successMsg = ''
+      this.files.errorMsg = ''
+      this.files.formData = new FormData()
+      this.files.itemsAdded = files.length
+      this.files.fileList = files
+
+      for (let x in files) {
+        if (!isNaN(x)) {
+          this.files.items = files[x]
+          this.files.itemsNames[x] = files[x].name
+          this.files.formData.append('files', files[x])
+        }
+      }
+
+      const fileArr = this.files.formData.getAll('files')
+      fileArr.length > 0 ? this.files.successMsg = STATUS_SUCCESS : this.files.eroorMsg = STATUS_FAILED
+
+      Papa.parse(fileArr[0], {
         delimiter: ',',
         newline: '\r\n',
         header: true,
@@ -266,41 +315,34 @@ export default {
 </script>
 
 <style scoped>
-.dropbox {
-  outline: 2px dashed grey;
-  outline-offset: -10px;
-  background: lightcyan;
-  color: dimgrey;
-  padding: 10px;
-  min-height: 200px;
-  position: relative;
-  cursor: pointer;
-}
-
-.input-file {
+.inputfile {
+  width: .1px;
+  height: .1px;
   opacity: 0;
-  width: 100%;
-  height: 200px;
+  overflow: hidden;
   position: absolute;
-  cursor: pointer;
+  z-index: -1;
 }
 
-.dropbox p {
-  text-align: center;
-  padding: 50px;
-}
-/* .button-group button {
-  background-color: var(--main-color);
+/* .inputfile + label {
+  font-size: 1.25em;
+  font-weight: 700;
   color: white;
-  padding: 10px 24px;
+  background-color: black;
+  display: inline-block;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: red;
+}
+
+.inputfile + label {
   cursor: pointer;
 }
 
-.button-group button:not(:last-child) {
-  border-right: none;
-}
-
-.button-group button:hover {
-  background-color: rgba(104, 88, 204, .5)
+.inputfile:focus + label {
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
 } */
 </style>
