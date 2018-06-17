@@ -46,7 +46,7 @@
       </div> -->
     </div>
 
-    <form id="upload-button" enctype="multipart/form-data" class="mb2">
+    <form id="upload-button" enctype="multipart/form-data" class="mb3">
       <input type="file" id="upload" name="upload" class="inputfile" @change="filesChange" accept=".csv" multiple>
       <label for="upload" class="f6 link br2 ba pv2 ph3 dip blue bg-white b--blue">Choose a file</label>
     </form>
@@ -62,7 +62,7 @@
     </div>
 
     <!-- csv data -->
-    <div v-if="isSuccess">
+    <div v-if="isSuccess" class="mt3">
 
       <p class="mid-gray pa3 br1 bg-washed-green mb3">
         Below are the contents of the uploaded .CSV file.
