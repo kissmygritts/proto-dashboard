@@ -95,8 +95,8 @@
     <hr>
     <button type="button" @click="submitUpload" class="f6 link dim br2 ba pv2 mb2 dib purple bg-white b--purple">Upload CSV</button>
 
-    <pre><code>{{ eventInput }}</code></pre>
-    <pre><code>{{ animalInput }}</code></pre>
+    <pre><code>{{ biometricInput }}</code></pre>
+    <pre><code>{{ ids }}</code></pre>
   </div>
 </template>
 
@@ -166,7 +166,8 @@ export default {
         successMsg: '',
         errorMsg: '',
         fileList: null
-      }
+      },
+      manyCsv: []
     }
   },
 
@@ -197,8 +198,10 @@ export default {
       }
     },
     eventInput () {
-      if (this.csv) {
-        return this.csv.data.map((m, i) => ({
+      const encounter = this.manyCsv.encounter
+
+      if (encounter) {
+        return encounter.data.map((m, i) => ({
           id: this.ids[i].event,
           activity_id: this.activity.selected.id,
           event_timestamp: formatTimestamp(m.date, m.start_time),
@@ -212,8 +215,10 @@ export default {
       }
     },
     animalInput () {
-      if (this.csv) {
-        return this.csv.data.map((m, i) => {
+      const encounter = this.manyCsv.encounter
+
+      if (encounter) {
+        return encounter.data.map((m, i) => {
           return ({
             id: this.ids[i].animal,
             event_id: this.ids[i].event,
@@ -231,20 +236,37 @@ export default {
       }
     },
     labidInput () {
-      if (this.csv) {
-        return this.csv.data.map((m, i) => {
+      const encounter = this.manyCsv.encounter
+
+      if (encounter) {
+        return encounter.data.map((m, i) => {
           return ({
             animal_id: this.ids[i].animal,
-            labid: m.lab_id
+            labid: m.labid.toLowerCase()
           })
         })
       }
     },
+    biometricInput () {
+      const biometric = this.manyCsv.biometric
+
+      if (biometric) {
+        return biometric.data.map(m => {
+          let id = this.ids.filter(f => f.indId === m.ind_id)
+          return {
+            ...m,
+            animal_id: id[0].animal
+          }
+        })
+      }
+    },
     ids () {
-      if (this.csv) {
-        return Array.apply(null, Array(this.csv.data.length)).map(m => ({
+      const encounter = this.manyCsv.encounter
+      if (encounter) {
+        return Array.apply(null, Array(encounter.data.length)).map((m, i) => ({
           event: v4(),
-          animal: v4()
+          animal: v4(),
+          indId: encounter.data[i].ind_id
         }))
       }
     }
@@ -277,25 +299,23 @@ export default {
 
       for (let x in files) {
         if (!isNaN(x)) {
-          this.files.items = files[x]
-          this.files.itemsNames[x] = files[x].name
-          this.files.formData.append('files', files[x])
+          let name = files[x].name
+          let nameNoExt = name.slice(0, name.indexOf('.'))
+          this.files.itemsNames[x] = name
+
+          Papa.parse(files[x], {
+            delimiter: ',',
+            newline: '\r\n',
+            header: true,
+            skipEmptyLines: true,
+            complete: results => {
+              this.manyCsv = { ...this.manyCsv, [nameNoExt]: results }
+            }
+          })
         }
       }
 
-      const fileArr = this.files.formData.getAll('files')
-      fileArr.length > 0 ? this.files.successMsg = STATUS_SUCCESS : this.files.eroorMsg = STATUS_FAILED
-
-      Papa.parse(fileArr[0], {
-        delimiter: ',',
-        newline: '\r\n',
-        header: true,
-        complete: results => {
-          this.csv = results
-          this.currentStatus = STATUS_SUCCESS
-          console.log(results)
-        }
-      })
+      this.currentStatus = this.files.itemsNames > 0 ? this.files.successMsg = STATUS_SUCCESS : STATUS_FAILED
     },
     submitUpload () {
       this.$apollo.mutate({
