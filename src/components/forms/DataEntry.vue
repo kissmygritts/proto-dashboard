@@ -33,17 +33,6 @@
           @select="onSuggestSelectActivity"
         ></vue-simple-suggest>
       </div>
-
-      <!-- upload csv of animals data -->
-      <!-- <div class="mb3">
-        <label for="uploads" class="f6 b db mb1">Upload Files</label>
-        <input
-          type="file"
-          name="uploads"
-          class="button-reset"
-          @change="filesChange($event.target.name, $event.target.files)"
-        >
-      </div> -->
     </div>
 
     <form id="upload-button" enctype="multipart/form-data" class="mb3">
@@ -51,7 +40,7 @@
       <label for="upload" class="f6 link br2 ba pv2 ph3 dip blue bg-white b--blue">Choose a file</label>
     </form>
 
-    <div id="uploads" v-if="this.files.successMsg === 2">
+    <div id="uploads" v-if="isSuccess">
       <span
         class="f6 br1 ba pv1 ph2 bg-green white b--green dib mr2"
         v-for="(name, index) in this.files.itemsNames"
@@ -62,7 +51,7 @@
     </div>
 
     <!-- csv data -->
-    <div v-if="isSuccess" class="mt3">
+    <div v-if="manyCsv.encounter" class="mt3">
 
       <p class="mid-gray pa3 br1 bg-washed-green mb3">
         Below are the contents of the uploaded .CSV file.
@@ -73,7 +62,7 @@
         Below is an explanation of the error. See <a href="https://github.com/kissmygritts/proto-dashboard/issues/7">this page</a>
         for an explanation of common errors.
 
-        <pre class="bg-washed-red dark-red"><code>{{ csv.errors }}</code></pre>
+        <pre class="bg-washed-red dark-red"><code>{{ manyCsv.encounter.errors }}</code></pre>
       </p>
 
       <!-- table of displayData -->
@@ -85,7 +74,7 @@
             </tr>
           </thead>
           <tbody class="lh-copy">
-            <tr v-for="(row, index) in csv.data" :key="index">
+            <tr v-for="(row, index) in manyCsv.encounter.data" :key="index">
               <td v-for="(field, index) in displayFields" :key="index" class="pv3 pr3 bb b--black-20">{{ row[field.prop] }}</td>
             </tr>
           </tbody>
@@ -95,8 +84,8 @@
     <hr>
     <button type="button" @click="submitUpload" class="f6 link dim br2 ba pv2 mb2 dib purple bg-white b--purple">Upload CSV</button>
 
-    <pre><code>{{ biometricInput }}</code></pre>
-    <pre><code>{{ ids }}</code></pre>
+    <!-- <pre><code>{{ marksInput }}</code></pre> -->
+    <!-- <pre><code>{{ ids }}</code></pre> -->
   </div>
 </template>
 
@@ -193,8 +182,8 @@ export default {
       return this.currentStatus === STATUS_FAILED
     },
     hasPapaParseError () {
-      if (this.csv) {
-        return this.csv.errors.length > 0
+      if (this.manyCsv.encounter) {
+        return this.manyCsv.encounter.errors.length > 0
       }
     },
     eventInput () {
@@ -254,8 +243,30 @@ export default {
         return biometric.data.map(m => {
           let id = this.ids.filter(f => f.indId === m.ind_id)
           return {
-            ...m,
-            animal_id: id[0].animal
+            animal_id: id[0].animal,
+            measurement: m.measurement,
+            val: parseFloat(m.val) || null,
+            units: m.units,
+            notes: m.notes
+          }
+        })
+      }
+    },
+    marksInput () {
+      const marks = this.manyCsv.marks
+
+      if (this.manyCsv.encounter && marks) {
+        return marks.data.map(m => {
+          let id = this.ids.filter(f => f.indId === m.ndowId)
+          let markId = v4()
+          return {
+            id: markId,
+            animal_id: id[0].animal,
+            mark_type: m.mark_type,
+            mark_id: m.mark_id,
+            mark_color: m.mark_color,
+            mark_location: m.mark_location,
+            date_given: formatTimestamp(m.date_given, '', 'YYYY-MM-DD')
           }
         })
       }
@@ -309,25 +320,29 @@ export default {
             header: true,
             skipEmptyLines: true,
             complete: results => {
+              this.currentStatus = STATUS_SAVING
               this.manyCsv = { ...this.manyCsv, [nameNoExt]: results }
             }
           })
         }
       }
 
-      this.currentStatus = this.files.itemsNames > 0 ? this.files.successMsg = STATUS_SUCCESS : STATUS_FAILED
+      this.currentStatus = this.files.itemsNames.length > 0 ? STATUS_SUCCESS : STATUS_FAILED
     },
     submitUpload () {
       this.$apollo.mutate({
         mutation: BULK_UPLOAD_MUTATION,
         variables: {
           events: this.eventInput,
-          animals: this.animalInput
+          animals: this.animalInput,
+          labids: this.labidInput,
+          marks: this.marksInput,
+          biometrics: this.biometricInput
         }
       })
         .then(data => {
           console.log(data)
-          this.$router.push(`/activities/${this.activity.selected.id}`)
+          // this.$router.push(`/activities/${this.activity.selected.id}`)
         })
     }
   }
