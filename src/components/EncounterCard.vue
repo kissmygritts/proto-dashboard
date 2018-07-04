@@ -1,11 +1,14 @@
 <template>
-  <div class="encounter-card bg-white cf flex flex-row justify-between pv1 ph2 mb1 br2">
+  <div
+    @click="emitClick"
+    class="encounter-card bg-white cf flex flex-row justify-between pv1 ph2 mb1 br2"
+  >
     <!-- left side of card -->
     <div class="card-left w-25">
       <div class="ndow-id f3 fw6 mb2 main">{{ encounter.ind_id }}</div>
       <div class="dates gray">
-        <div class="year">2018</div>
-        <div class="date">Jan 01</div>
+        <div class="year">{{ year }}</div>
+        <div class="date">{{ date }}</div>
       </div>
     </div>
 
@@ -38,9 +41,24 @@
 </template>
 
 <script>
+import format from 'date-fns/format'
+
 export default {
   name: 'EncounterCard',
-  props: [ 'encounter' ]
+  props: [ 'encounter' ],
+  computed: {
+    year () {
+      return format(this.encounter.event_timestamp, 'YYYY')
+    },
+    date () {
+      return format(this.encounter.event_timestamp, 'MMM D')
+    }
+  },
+  methods: {
+    emitClick () {
+      this.$emit('click', this.encounter.event_id)
+    }
+  }
 }
 </script>
 

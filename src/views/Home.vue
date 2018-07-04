@@ -1,14 +1,17 @@
 <template>
   <div id="dashboard" class="flex flex-row items-start w-100 h-100">
     <div id="encounters" class="w-third h-100 flex flex-column pa2 overflow-y-scroll justify-between">
+
       <encounter-card
+        class="pointer"
         v-for="(encounter, index) in encounterCardProp"
         :key="index"
         :encounter="encounter"
+        @click="toggleDrawer"
       />
     </div>
-    <div id="map" class="bg-green h-100">
-      <l-map :center="mapCenter" :zoom="7" ref="map">
+    <div id="map" class="bg-green h-100" ref="mapContainer">
+      <l-map :center="mapCenter" :zoom="7" ref="mapElement">
         <l-tile-layer url="http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"/>
         <l-circle-marker
           v-for="(point, index) in mapPoints"
@@ -22,11 +25,35 @@
         />
       </l-map>
     </div>
+
+    <transition name="slide">
+      <!-- <div class="drawer flex flex-row items-start pa3 bg-near-white" v-if="drawerVisible">
+        <div class="bg-white br2 w-100 ph3 pb3">
+          <h1 class="f2 lh-title ttc mb2">2017-10-19 07:32:00</h1>
+          <h2 class="f5 lh-title ttc silver mb2">94c2e957-5f8d-445b-9e8b-b5591ba76d1d</h2>
+
+          <a @click="closeDrawer" class="f6 link br2 ba ph3 pv2 dib blue mr2 bg-animate hover-bg-blue hover-white">Close</a>
+          <a id="delete-button" class="f6 link br2 ba ph3 pv2 dib orange mr2 bg-animate hover-bg-orange hover-white">Update Event</a>
+          <a id="delete-button" class="f6 link br2 ba ph3 pv2 dib red mr2 bg-animate hover-bg-red hover-white">Delete Event</a>
+
+          <pre><code>blah blah</code></pre>
+        </div>
+      </div> -->
+      <drawer
+        class="drawer"
+        :visible="drawerVisible"
+        :eventId="currentEventId"
+        :drawerWidth="mapWidth"
+        @close="closeDrawer"
+      />
+    </transition>
+
   </div>
 </template>
 
 <script>
 import EncounterCard from '@/components/EncounterCard'
+import Drawer from '@/components/organisms/Drawer'
 import { LMap, LTileLayer, LCircleMarker } from 'vue2-leaflet'
 import L from 'leaflet'
 import { ALL_ENCOUNTERS_QUERY } from '@/graphql/Encounters_AllQuery.js'
@@ -37,11 +64,15 @@ export default {
     EncounterCard,
     LMap,
     LTileLayer,
-    LCircleMarker
+    LCircleMarker,
+    Drawer
   },
   data () {
     return {
-      encounters: []
+      encounters: [],
+      drawerVisible: false,
+      mapWidth: 0,
+      currentEventId: null
     }
   },
   apollo: {
@@ -59,9 +90,9 @@ export default {
           event_timestamp: m.event_timestamp,
           sex: m.sex,
           age: m.age_class,
-          status: m.animal_status
+          status: m.animal_status,
+          event_id: m.event_id
         }))
-        // .slice(0, 1)
       }
     },
     mapBounds () {
@@ -76,6 +107,20 @@ export default {
       if (this.encounters) {
         return this.encounters.map(m => L.latLng([m.y, m.x]))
       }
+    }
+  },
+  methods: {
+    toggleDrawer (eventId) {
+      this.currentEventId = eventId
+      this.mapWidth = this.$refs.mapContainer.clientWidth
+      this.drawerVisible = this.drawerVisible ? this.drawerVisible : !this.drawerVisible
+    },
+    closeDrawer () {
+      this.drawerVisible = false
+    },
+    calcMapWidth () {
+      console.log(this.$refs.mapContainer.clientWidth)
+      this.mapWidth = this.$refs.mapContainer.clientWidth
     }
   }
 }
@@ -131,5 +176,27 @@ export default {
 .field-data {
   text-transform: capitalize;
   padding-top: 2px;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  /* width: 66%; */
+  right: 0px;
+  z-index: 1001;
+  transition: transform .3s ease-in-out;
+}
+
+.drawer-active {
+  transform: translateX(-540px);
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: all .15s ease-out;
+}
+
+.slide-enter, .slide-leave-to {
+  transform: translateX(540px);
 }
 </style>

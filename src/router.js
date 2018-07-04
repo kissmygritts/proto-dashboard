@@ -10,6 +10,7 @@ import autocomplete from './components/inputs/Autocomplete'
 import DataEntryWorkflow from './views/DataEntryWorkflow'
 import ActivityDetails from './views/ActivityDetails'
 import FormList from './views/FormList'
+import AnimalDetails from './views/AnimalDetails'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/activities/:id',
       name: 'activity',
       component: ActivityDetails
+    },
+    {
+      path: '/animals/:id',
+      name: 'animal',
+      component: AnimalDetails
     },
     {
       path: '/autocomplete',
