@@ -13,7 +13,37 @@
       <a id="delete-button" class="f6 link br2 ba ph3 pv2 dib orange mr2 bg-animate hover-bg-orange hover-white">Update Event</a>
       <a id="delete-button" class="f6 link br2 ba ph3 pv2 dib red mr2 bg-animate hover-bg-red hover-white">Delete Event</a>
 
-      <pre class="mt4"><code>{{ event }}</code></pre>
+      <div id="encounter-table" class="mt3">
+        <table class="f6 w-100 mw8 center">
+          <thead>
+            <tr>
+              <th
+                class="fw6 bb bb-black-20 tl pb1 pr3 bg-white"
+                v-for="(field, index) in encounterTableFields"
+                :key="index"
+              >
+                {{ field }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(encounter, index) in encounterTable"
+              :key="index"
+            >
+              <td
+                class="pv2 pr3 bb b--black-20"
+                v-for="(field, index) in encounterTableFields"
+                :key="index"
+              >
+                {{ encounter[field] }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <pre class="mt4"><code>{{ encounterTable }}</code></pre>
     </div>
   </div>
 </template>
@@ -34,12 +64,27 @@ export default {
       query: EVENT_BY_ID_QUERY,
       variables () {
         return { eventId: this.eventId }
+      },
+      skip () {
+        return !this.visible
       }
     }
   },
   computed: {
     styleObject () {
       return { width: `${this.drawerWidth}px` }
+    },
+    encounterTable () {
+      return this.event.animals.map(m => ({
+        species: m.species.common_name,
+        age: m.age_class,
+        sex: m.sex,
+        n: m.n,
+        id: m.ind_id
+      }))
+    },
+    encounterTableFields () {
+      return ['species', 'age', 'sex', 'n', 'id']
     }
   },
   methods: {
