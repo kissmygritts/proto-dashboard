@@ -23,16 +23,27 @@
           :url="layer.url"
         />
 
-        <l-circle-marker
+        <!-- <l-circle-marker
           v-for="(point, index) in mapPoints"
           :key="index"
-          :latLng="point"
+          :latLng="point.position"
           :radius="5"
           :weight="1"
           color="#6958d0"
           fillColor="#6958d0"
           :fillOpacity=".65"
-        />
+        /> -->
+
+        <circle-marker-popup
+          v-for="(marker, index) in mapPoints"
+          :key="index"
+          :latLng="marker.position"
+        >
+          <ul>
+            <li>NDOWID: {{ marker.indId }}</li>
+            <li>Date: {{ marker.date }}</li>
+          </ul>
+        </circle-marker-popup>
       </l-map>
     </div>
 
@@ -50,10 +61,11 @@
 </template>
 
 <script>
-import EncounterCard from '@/components/EncounterCard'
-import Drawer from '@/components/organisms/Drawer'
-import { LMap, LTileLayer, LCircleMarker, LControlLayers } from 'vue2-leaflet'
 import L from 'leaflet'
+import { LMap, LTileLayer, LCircleMarker, LControlLayers } from 'vue2-leaflet'
+import Drawer from '@/components/organisms/Drawer'
+import EncounterCard from '@/components/EncounterCard'
+import CircleMarkerPopup from '@/components/molecules/CircleMarkerPopup'
 import { ALL_ENCOUNTERS_QUERY } from '@/graphql/Encounters_AllQuery.js'
 
 const tileLayers = [
@@ -79,6 +91,7 @@ export default {
     LTileLayer,
     LCircleMarker,
     LControlLayers,
+    CircleMarkerPopup,
     EncounterCard,
     Drawer
   },
@@ -122,7 +135,11 @@ export default {
     },
     mapPoints () {
       if (this.encounters) {
-        return this.encounters.map(m => L.latLng([m.y, m.x]))
+        return this.encounters.map(m => ({
+          indId: m.ind_id,
+          date: m.event_timestamp,
+          position: L.latLng([ m.y, m.x ])
+        }))
       }
     }
   },
