@@ -8,6 +8,8 @@
         :key="index"
         :encounter="encounter"
         @click="toggleDrawer"
+        @hover="hover"
+        @leave="hoverEncounterCard = false"
       />
     </div>
     <div id="map" class="bg-green h-100" ref="mapContainer">
@@ -23,16 +25,15 @@
           :url="layer.url"
         />
 
-        <!-- <l-circle-marker
-          v-for="(point, index) in mapPoints"
-          :key="index"
-          :latLng="point.position"
-          :radius="5"
+        <l-circle-marker
+          v-if="hoverEncounterCard"
+          :latLng="hoveredEncounter"
+          :radius="10"
           :weight="1"
-          color="#6958d0"
-          fillColor="#6958d0"
-          :fillOpacity=".65"
-        /> -->
+          color="#83d058"
+          fillColor="#83d058"
+          :fillOpacity="1"
+        />
 
         <circle-marker-popup
           v-for="(marker, index) in mapPoints"
@@ -101,7 +102,9 @@ export default {
       drawerVisible: false,
       mapWidth: 0,
       currentEventId: null,
-      tileLayers,
+      hoverEncounterCard: false,
+      hoveredEncounter: true,
+      tileLayers: tileLayers,
       layersPosition: 'topright'
     }
   },
@@ -151,10 +154,17 @@ export default {
     },
     closeDrawer () {
       this.drawerVisible = false
+      this.newMarker = 'xyz'
     },
     calcMapWidth () {
       console.log(this.$refs.mapContainer.clientWidth)
       this.mapWidth = this.$refs.mapContainer.clientWidth
+    },
+    hover (eventId) {
+      this.hoverEncounterCard = true
+      this.hoveredEncounter = this.encounters
+        .filter(f => f.event_id === eventId)
+        .map(m => ({ lat: m.y, lng: m.x }))[0]
     }
   }
 }

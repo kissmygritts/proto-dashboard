@@ -1,6 +1,8 @@
 <template>
   <div
     @click="emitClick"
+    @mouseenter="emitMouseEnter"
+    @mouseleave="emitMouseLeave"
     class="encounter-card bg-white cf flex flex-row justify-between pv1 ph2 mb1 br2"
   >
     <!-- left side of card -->
@@ -57,6 +59,12 @@ export default {
   methods: {
     emitClick () {
       this.$emit('click', this.encounter.event_id)
+    },
+    emitMouseEnter () {
+      this.$emit('hover', this.encounter.event_id)
+    },
+    emitMouseLeave () {
+      this.$emit('leave')
     }
   }
 }
