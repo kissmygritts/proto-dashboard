@@ -11,7 +11,7 @@
     </div>
 
     <div id="form-fields">
-      <form @submit.prevent="submitForm">
+      <form>
         <!-- field -->
         <div class="mb3">
           <label for="effort-name" class="f6 b db mb1">Effort Name</label>
@@ -87,7 +87,7 @@
           ></textarea>
         </div>
 
-        <button class="f6 link dim br2 pv2 mb2 dib purple bg-white b--purple">Submit Activity</button>
+        <button @click="submitForm" class="f6 link dim br2 pv2 mb2 dib purple bg-white b--purple">Submit Activity</button>
 
         <hr>
 

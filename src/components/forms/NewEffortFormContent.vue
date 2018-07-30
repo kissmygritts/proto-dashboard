@@ -10,7 +10,7 @@
     </div>
 
     <div id="form-fields">
-      <form @submit.prevent="submitEffort" class="w-100">
+      <form class="w-100">
         <!-- field -->
         <div class="w-100 mb3">
           <label for="effort-name" class="f6 b db mb1">Effort Name</label>
@@ -59,7 +59,7 @@
           <!-- <small class="f6 black-60 db mb2">Name of the effort</small> -->
         </div>
 
-        <button type="submit" class="f6 link dim br2 ba pv2 mb2 dib purple bg-white b--purple">Submit Effort</button>
+        <button type="button" @click="submitEffort" class="f6 link dim br2 ba pv2 mb2 dib purple bg-white b--purple">Submit Effort</button>
 
         <hr>
 
