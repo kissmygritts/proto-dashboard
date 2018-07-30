@@ -75,13 +75,15 @@ export default {
       return { width: `${this.drawerWidth}px` }
     },
     encounterTable () {
-      return this.event.animals.map(m => ({
-        species: m.species.common_name,
-        age: m.age_class,
-        sex: m.sex,
-        n: m.n,
-        id: m.ind_id
-      }))
+      if (!this.$apollo.loading) {
+        return this.event.animals.map(m => ({
+          species: m.species.common_name,
+          age: m.age_class,
+          sex: m.sex,
+          n: m.n,
+          id: m.ind_id
+        }))
+      }
     },
     encounterTableFields () {
       return ['species', 'age', 'sex', 'n', 'id']
