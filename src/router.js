@@ -11,6 +11,7 @@ import DataEntryWorkflow from './views/DataEntryWorkflow'
 import ActivityDetails from './views/ActivityDetails'
 import FormList from './views/FormList'
 import AnimalDetails from './views/AnimalDetails'
+import SpeciesList from './views/SpeciesList'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '/species',
+      name: 'species',
+      component: SpeciesList
     },
     {
       path: '/efforts',
